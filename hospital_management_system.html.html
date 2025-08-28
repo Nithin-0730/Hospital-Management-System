@@ -1,0 +1,1017 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCare Hospital - Complete Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        :root {
+            --primary: #2c7da0;
+            --primary-dark: #1a5276;
+            --secondary: #5dade2;
+            --accent: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --success: #2ecc71;
+            --light: #f8f9fa;
+            --dark: #2c3e50;
+            --gray: #95a5a6;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            --radius: 8px;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8f4f8 0%, #d1e7f5 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .hospital-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .logo-image {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        .hospital-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+        }
+
+        .hospital-tagline {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .user-controls {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .nav-tabs {
+            background: var(--light);
+            display: flex;
+            padding: 0 20px;
+            border-bottom: 2px solid var(--secondary);
+        }
+
+        .nav-tab {
+            padding: 15px 20px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--dark);
+            border-bottom: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+
+        .nav-tab.active {
+            color: var(--primary);
+            border-bottom-color: var(--primary);
+            background: rgba(44, 125, 160, 0.1);
+        }
+
+        .nav-tab:hover {
+            color: var(--primary);
+            background: rgba(44, 125, 160, 0.05);
+        }
+
+        .content-area {
+            padding: 30px;
+            min-height: 600px;
+        }
+
+        .section {
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid #e9ecef;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .card-title {
+            font-size: 1.3rem;
+            color: var(--primary);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+            font-size: 0.9rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group i {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(44, 125, 160, 0.1);
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: var(--radius);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: var(--success);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning);
+            color: white;
+        }
+
+        .grid {
+            display: grid;
+            gap: 20px;
+        }
+
+        .grid-2 {
+            grid-template-columns: 1fr 1fr;
+        }
+
+        .grid-3 {
+            grid-template-columns: 1fr 1fr 1fr;
+        }
+
+        .emergency-banner {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 20px;
+            border-radius: var(--radius);
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .emergency-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin: 10px 0;
+        }
+
+        .doctor-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 20px;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .doctor-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .doctor-image {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            margin: 0 auto 15px;
+            object-fit: cover;
+            border: 3px solid var(--primary);
+        }
+
+        .specialization-badge {
+            background: var(--secondary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            margin: 10px 0;
+        }
+
+        .appointment-card {
+            background: white;
+            border-left: 4px solid var(--primary);
+            border-radius: var(--radius);
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: var(--shadow);
+        }
+
+        .status-badge {
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .status-scheduled {
+            background: #ffeaa7;
+            color: #856404;
+        }
+
+        .status-completed {
+            background: #d1f7c4;
+            color: #166534;
+        }
+
+        .status-cancelled {
+            background: #ffe5e5;
+            color: #dc2626;
+        }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .table th, .table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        .table th {
+            background: var(--light);
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .table tr:hover {
+            background: #f8f9fa;
+        }
+
+        .search-box {
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 15px 15px 15px 45px;
+            border: 2px solid #e9ecef;
+            border-radius: var(--radius);
+            font-size: 1rem;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--primary);
+        }
+
+        .reminder-banner {
+            background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%);
+            color: white;
+            padding: 15px;
+            border-radius: var(--radius);
+            margin: 20px 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .grid-2, .grid-3 {
+                grid-template-columns: 1fr;
+            }
+            
+            .header {
+                flex-direction: column;
+                text-align: center;
+                gap: 15px;
+            }
+            
+            .nav-tabs {
+                flex-wrap: wrap;
+            }
+            
+            .nav-tab {
+                padding: 10px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <div class="hospital-info">
+                <div class="logo-image">
+                    
+                </div>
+                <div>
+                    <h1 class="hospital-name">MediCare Hospital</h1>
+                    <p class="hospital-tagline">Complete Healthcare Management System</p>
+                </div>
+            </div>
+           <div class="user-controls">
+    <a href="login.html" class="btn btn-primary">
+        <i class="fas fa-sign-in-alt"></i>Login
+    </a>
+    <a href="register.html" class="btn">
+        <i class="fas fa-user-plus"></i>Register
+    </a>
+</div>
+
+        </div>
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab active" data-target="dashboard">Dashboard</div>
+            <div class="nav-tab" data-target="appointments">Appointments</div>
+            <div class="nav-tab" data-target="doctors">Doctors</div>
+            <div class="nav-tab" data-target="patients">Patients</div>
+            <div class="nav-tab" data-target="prescriptions">Prescriptions</div>
+            <div class="nav-tab" data-target="billing">Billing</div>
+            <div class="nav-tab" data-target="staff">Staff Schedule</div>
+            <div class="nav-tab" data-target="emergency">Emergency</div>
+        </div>
+
+        <!-- Main Content Area -->
+        <div class="content-area">
+            <!-- Dashboard Section -->
+            <div class="section active" id="dashboard">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Hospital Overview</h2>
+                        <span>Today: <span id="currentDate"></span></span>
+                    </div>
+                    <div class="grid grid-3">
+                        <div class="card" style="background: linear-gradient(135deg, #74b9ff 0%, #0984e3 100%); color: white;">
+                            <h3>Total Patients</h3>
+                            <p style="font-size: 2rem; font-weight: bold;">1,247</p>
+                        </div>
+                        <div class="card" style="background: linear-gradient(135deg, #00b894 0%, #00a085 100%); color: white;">
+                            <h3>Today's Appointments</h3>
+                            <p style="font-size: 2rem; font-weight: bold;">86</p>
+                        </div>
+                        <div class="card" style="background: linear-gradient(135deg, #fdcb6e 0%, #fdcb6e 100%); color: white;">
+                            <h3>Pending Prescriptions</h3>
+                            <p style="font-size: 2rem; font-weight: bold;">23</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="reminder-banner">
+                    <div>
+                        <h3><i class="fas fa-bell"></i> Appointment Reminder</h3>
+                        <p>You have an appointment with Dr. Smith in 2 hours</p>
+                    </div>
+                    <button class="btn btn-warning">
+                        <i class="fas fa-eye"></i>View Details
+                    </button>
+                </div>
+
+                <div class="grid grid-2">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Recent Appointments</h2>
+                        </div>
+                        <div class="appointment-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4>Dr. Sarah Johnson</h4>
+                                    <p>Cardiology • Today, 10:00 AM</p>
+                                </div>
+                                <span class="status-badge status-scheduled">Scheduled</span>
+                            </div>
+                        </div>
+                        <div class="appointment-card">
+                            <div style="display: flex; justify-content: space-between; align-items: center;">
+                                <div>
+                                    <h4>Dr. Michael Brown</h4>
+                                    <p>Orthopedics • Tomorrow, 2:30 PM</p>
+                                </div>
+                                <span class="status-badge status-scheduled">Scheduled</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">Quick Actions</h2>
+                        </div>
+                        <div style="display: grid; gap: 10px;">
+                            <button class="btn btn-primary">
+                                <i class="fas fa-calendar-plus"></i>Book Appointment
+                            </button>
+                            <button class="btn btn-success">
+                                <i class="fas fa-user-md"></i>Find Doctor
+                            </button>
+                            <button class="btn btn-warning">
+                                <i class="fas fa-file-medical"></i>View Medical History
+                            </button>
+                            <button class="btn btn-danger">
+                                <i class="fas fa-phone-alt"></i>Emergency Contact
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Appointments Section -->
+            <div class="section" id="appointments">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Book Appointment</h2>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Select Doctor</label>
+                            <select class="form-input">
+                                <option value="">Select a doctor</option>
+                                <option value="1">Dr. Sarah Johnson - Cardiology</option>
+                                <option value="2">Dr. Michael Brown - Orthopedics</option>
+                                <option value="3">Dr. Emily Chen - Pediatrics</option>
+                                <option value="4">Dr. Robert Wilson - Neurology</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Appointment Date</label>
+                            <input type="date" class="form-input">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Preferred Time</label>
+                            <select class="form-input">
+                                <option value="">Select time</option>
+                                <option value="9:00">9:00 AM</option>
+                                <option value="10:00">10:00 AM</option>
+                                <option value="11:00">11:00 AM</option>
+                                <option value="2:00">2:00 PM</option>
+                                <option value="3:00">3:00 PM</option>
+                                <option value="4:00">4:00 PM</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Reason for Visit</label>
+                            <textarea class="form-input" placeholder="Briefly describe your symptoms or reason for appointment"></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-calendar-check"></i>Schedule Appointment
+                    </button>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">My Appointments</h2>
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Doctor</th>
+                                <th>Specialization</th>
+                                <th>Date & Time</th>
+                                <th>Status</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Dr. Sarah Johnson</td>
+                                <td>Cardiology</td>
+                                <td>Dec 15, 2023 • 10:00 AM</td>
+                                <td><span class="status-badge status-scheduled">Scheduled</span></td>
+                                <td>
+                                    <button class="btn btn-danger btn-sm">
+                                        <i class="fas fa-times"></i>Cancel
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Dr. Michael Brown</td>
+                                <td>Orthopedics</td>
+                                <td>Dec 12, 2023 • 2:30 PM</td>
+                                <td><span class="status-badge status-completed">Completed</span></td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fas fa-file-medical"></i>Details
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Doctors Section -->
+            <div class="section" id="doctors">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Find Doctors</h2>
+                        <div class="search-box">
+                            <i class="fas fa-search search-icon"></i>
+                            <input type="text" class="search-input" placeholder="Search by specialization, name, or department...">
+                        </div>
+                    </div>
+                    <div class="grid grid-3">
+                        <div class="doctor-card">
+                            <img src="https://placehold.co/100x100" alt="Professional portrait of Dr. Sarah Johnson, female cardiologist with friendly smile" class="doctor-image">
+                            <h3>Dr. Sarah Johnson</h3>
+                            <div class="specialization-badge">Cardiology</div>
+                            <p>15 years experience</p>
+                            <p>⭐⭐⭐⭐⭐ (4.9/5)</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-calendar"></i>Book Appointment
+                            </button>
+                        </div>
+                        <div class="doctor-card">
+                            <img src="https://placehold.co/100x100" alt="Professional portrait of Dr. Michael Brown, male orthopedic surgeon with confident expression" class="doctor-image">
+                            <h3>Dr. Michael Brown</h3>
+                            <div class="specialization-badge">Orthopedics</div>
+                            <p>12 years experience</p>
+                            <p>⭐⭐⭐⭐⭐ (4.8/5)</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-calendar"></i>Book Appointment
+                            </button>
+                        </div>
+                        <div class="doctor-card">
+                            <img src="https://placehold.co/100x100" alt="Professional portrait of Dr. Emily Chen, female pediatrician with warm smile" class="doctor-image">
+                            <h3>Dr. Emily Chen</h3>
+                            <div class="specialization-badge">Pediatrics</div>
+                            <p>10 years experience</p>
+                            <p>⭐⭐⭐⭐⭐ (4.9/5)</p>
+                            <button class="btn btn-primary">
+                                <i class="fas fa-calendar"></i>Book Appointment
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Patients Section -->
+            <div class="section" id="patients">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Patient Management</h2>
+                        <button class="btn btn-success">
+                            <i class="fas fa-user-plus"></i>Add New Patient
+                        </button>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search search-icon"></i>
+                        <input type="text" class="search-input" placeholder="Search patients...">
+                    </div>
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Patient ID</th>
+                                <th>Name</th>
+                                <th>Age</th>
+                                <th>Contact</th>
+                                <th>Last Visit</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>P001</td>
+                                <td>John Doe</td>
+                                <td>45</td>
+                                <td>john.doe@email.com</td>
+                                <td>Dec 10, 2023</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye"></i>View
+                                    </button>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>P002</td>
+                                <td>Jane Smith</td>
+                                <td>32</td>
+                                <td>jane.smith@email.com</td>
+                                <td>Dec 8, 2023</td>
+                                <td>
+                                    <button class="btn btn-primary btn-sm">
+                                        <i class="fas fa-eye"></i>View
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Prescriptions Section -->
+            <div class="section" id="prescriptions">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Prescription Management</h2>
+                        <button class="btn btn-success">
+                            <i class="fas fa-plus"></i>New Prescription
+                        </button>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Select Patient</label>
+                            <select class="form-input">
+                                <option value="">Select patient</option>
+                                <option value="1">John Doe (P001)</option>
+                                <option value="2">Jane Smith (P002)</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Medication</label>
+                            <input type="text" class="form-input" placeholder="Enter medication name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Dosage</label>
+                            <input type="text" class="form-input" placeholder="e.g., 500mg twice daily">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Duration</label>
+                            <input type="text" class="form-input" placeholder="e.g., 7 days">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Additional Instructions</label>
+                            <textarea class="form-input" placeholder="Special instructions..."></textarea>
+                        </div>
+                    </div>
+                    <button class="btn btn-primary">
+                        <i class="fas fa-save"></i>Save Prescription
+                    </button>
+                </div>
+            </div>
+
+            <!-- Billing Section -->
+            <div class="section" id="billing">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Billing & Payments</h2>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="card">
+                            <h3>Generate Bill</h3>
+                            <div class="form-group">
+                                <label class="form-label">Patient</label>
+                                <select class="form-input">
+                                    <option value="">Select patient</option>
+                                    <option value="1">John Doe</option>
+                                    <option value="2">Jane Smith</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Services</label>
+                                <select class="form-input" multiple>
+                                    <option value="consultation">Consultation Fee</option>
+                                    <option value="lab">Laboratory Tests</option>
+                                    <option value="medication">Medication</option>
+                                    <option value="procedure">Medical Procedure</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary">Generate Bill</button>
+                        </div>
+                        <div class="card">
+                            <h3>Payment History</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Invoice #</th>
+                                        <th>Amount</th>
+                                        <th>Status</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>INV-001</td>
+                                        <td>$150.00</td>
+                                        <td><span class="status-badge status-completed">Paid</span></td>
+                                        <td>Dec 10, 2023</td>
+                                    </tr>
+                                    <tr>
+                                        <td>INV-002</td>
+                                        <td>$89.50</td>
+                                        <td><span class="status-badge status-scheduled">Pending</span></td>
+                                        <td>Dec 12, 2023</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Staff Schedule Section -->
+            <div class="section" id="staff">
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Staff Scheduling</h2>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="card">
+                            <h3>Doctor Schedule</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Doctor</th>
+                                        <th>Specialization</th>
+                                        <th>Shift</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Dr. Sarah Johnson</td>
+                                        <td>Cardiology</td>
+                                        <td>9:00 AM - 5:00 PM</td>
+                                        <td><span class="status-badge status-scheduled">On Duty</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Dr. Michael Brown</td>
+                                        <td>Orthopedics</td>
+                                        <td>10:00 AM - 6:00 PM</td>
+                                        <td><span class="status-badge status-scheduled">On Duty</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="card">
+                            <h3>Nurse Schedule</h3>
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Nurse</th>
+                                        <th>Department</th>
+                                        <th>Shift</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>Nurse Emily</td>
+                                        <td>Emergency</td>
+                                        <td>7:00 AM - 3:00 PM</td>
+                                        <td><span class="status-badge status-scheduled">On Duty</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Nurse Robert</td>
+                                        <td>ICU</td>
+                                        <td>3:00 PM - 11:00 PM</td>
+                                        <td><span class="status-badge status-scheduled">Off Duty</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Emergency Section -->
+            <div class="section" id="emergency">
+                <div class="emergency-banner">
+                    <h2><i class="fas fa-ambulance"></i> EMERGENCY CONTACT</h2>
+                    <p class="emergency-number">Call: 911 or (555) 123-EMER</p>
+                    <p>Available 24/7 for medical emergencies</p>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Emergency Services</h2>
+                    </div>
+                    <div class="grid grid-3">
+                        <div class="card" style="text-align: center;">
+                            <i class="fas fa-ambulance" style="font-size: 3rem; color: var(--danger);"></i>
+                            <h3>Ambulance Service</h3>
+                            <p>Immediate dispatch available</p>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <i class="fas fa-first-aid" style="font-size: 3rem; color: var(--danger);"></i>
+                            <h3>Emergency Room</h3>
+                            <p>24/7 emergency care</p>
+                        </div>
+                        <div class="card" style="text-align: center;">
+                            <i class="fas fa-user-md" style="font-size: 3rem; color: var(--danger);"></i>
+                            <h3>Trauma Center</h3>
+                            <p>Specialized critical care</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">Quick Emergency Contact</h2>
+                    </div>
+                    <div class="grid grid-2">
+                        <div class="form-group">
+                            <label class="form-label">Your Name</label>
+                            <input type="text" class="form-input" placeholder="Enter your name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Phone Number</label>
+                            <input type="tel" class="form-input" placeholder="Enter your phone number">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Emergency Type</label>
+                            <select class="form-input">
+                                <option value="">Select emergency type</option>
+                                <option value="medical">Medical Emergency</option>
+                                <option value="accident">Accident</option>
+                                <option value="heart">Heart Attack/Stroke</option>
+                                <option value="other">Other Emergency</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label">Location</label>
+                            <input type="text" class="form-input" placeholder="Enter your location">
+                        </div>
+                    </div>
+                    <button class="btn btn-danger">
+                        <i class="fas fa-phone-alt"></i>Call Emergency Services
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set current date
+            const currentDate = new Date().toLocaleDateString('en-US', {
+                weekday: 'long',
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric'
+            });
+            document.getElementById('currentDate').textContent = currentDate;
+
+            // Tab navigation
+            const tabs = document.querySelectorAll('.nav-tab');
+            const sections = document.querySelectorAll('.section');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const target = this.getAttribute('data-target');
+                    
+                    // Remove active class from all tabs and sections
+                    tabs.forEach(t => t.classList.remove('active'));
+                    sections.forEach(s => s.classList.remove('active'));
+                    
+                    // Add active class to current tab and section
+                    this.classList.add('active');
+                    document.getElementById(target).classList.add('active');
+                });
+            });
+
+            // Login/Register buttons
+            document.getElementById('loginBtn').addEventListener('click', function() {
+                alert('Login functionality would open a modal or redirect to login page');
+            });
+
+            document.getElementById('registerBtn').addEventListener('click', function() {
+                alert('Registration functionality would open a modal or redirect to registration page');
+            });
+
+            // Simulate appointment reminders
+            setInterval(() => {
+                const reminders = document.querySelectorAll('.reminder-banner');
+                reminders.forEach(reminder => {
+                    reminder.style.animation = 'pulse 2s infinite';
+                });
+            }, 5000);
+
+            // Add pulse animation for reminders
+            const style = document.createElement('style');
+            style.textContent = `
+                @keyframes pulse {
+                    0% { transform: scale(1); }
+                    50% { transform: scale(1.02); }
+                    100% { transform: scale(1); }
+                }
+            `;
+            document.head.appendChild(style);
+
+            // Search functionality
+            const searchInputs = document.querySelectorAll('.search-input');
+            searchInputs.forEach(input => {
+                input.addEventListener('input', function() {
+                    console.log('Searching for:', this.value);
+                    // Actual search implementation would go here
+                });
+            });
+
+            // Emergency contact form
+            const emergencyForm = document.querySelector('#emergency .card:last-child');
+            emergencyForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                alert('Emergency alert sent! Help is on the way.');
+            });
+        });
+    </script>
+</body>
+</html>
+
